@@ -10,7 +10,7 @@ module.exports = class Scan {
         let char;
         let charAnt;
         let charDps;
-        let sair = false;
+        let sair = false; 
 
         //variável de resultado
         let tokenArr = [];
