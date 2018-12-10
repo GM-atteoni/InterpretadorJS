@@ -19,7 +19,7 @@ module.exports = class Scan {
     escanear() {
 
         //Inicialização
-        iniciarChar();
+        this.iniciarChar();
 
         while (!sair) {
 
@@ -81,7 +81,7 @@ module.exports = class Scan {
 
     //Funções de controle
     iniciarChar() {
-        char = MOCK_TEXT[pos];
+        this.char = this.MOCK_TEXT[this.pos];
         charAnt = null;
         charDps = MOCK_TEXT[pos + 1];
     }
