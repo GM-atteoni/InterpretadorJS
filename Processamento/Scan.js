@@ -6,14 +6,14 @@ module.exports = class Scan {
         this.MOCK_TEXT = MOCK_TEXT
 
         //variáveis de controle
-        let pos = 0;
-        let char;
-        let charAnt;
-        let charDps;
-        let sair = false; 
+        this.pos = 0;
+        this.char;
+        this.charAnt;
+        this.charDps;
+        this.sair = false; 
 
         //variável de resultado
-        let tokenArr = [];
+        this.tokenArr = [];
     }
 
     escanear() {
@@ -21,60 +21,60 @@ module.exports = class Scan {
         //Inicialização
         this.iniciarChar();
 
-        while (!sair) {
+        while (!this.sair) {
 
-            if (pos != 0) {
-                pegaChar();
+            if (this.pos != 0) {
+                this.pegaChar();
             }
 
 
             //Scaneamento baseado em regras de negócio. Nesse momento, definiremos o que é um Token.
-            switch (char) {
+            switch (this.char) {
                 //abertura de TAG
                 case '<':
                     //Regra de negócio
                     let strTk = "";
-                    strTk = strTk + char;
-                    while (char != '>') {
-                        pegaChar();
-                        strTk = strTk + char;
+                    strTk = strTk + this.char;
+                    while (this.char != '>') {
+                        this.pegaChar();
+                        strTk = strTk + this.char;
                     }
                     //Validação fechamento
                     var valid = "</"
                     if (strTk.includes(valid)) {
                         //Criação do Token
                         let objToken = new Token(strTk, "FECHAMENTO");
-                        tokenArr.push(objToken);
+                        this.tokenArr.push(objToken);
                     } else {
                         //Criação do Token
                         let objToken = new Token(strTk, "TAG");
-                        tokenArr.push(objToken);
+                        this.tokenArr.push(objToken);
                     }
                     break;
 
                 //O default extrairá números e palavras, além de caracteres não característicos.
                 default:
                     //Verificação para palavras fora das TAGs
-                    if (isLetter(char)) {
+                    if (this.isLetter(this.char)) {
                         let strTk = "";
-                        strTk = strTk + char;
-                        while (charDps != " " && charDps != "<") {
-                            pegaChar();
-                            strTk = strTk + char;
+                        strTk = strTk + this.char;
+                        while (this.charDps != " " && this.charDps != "<") {
+                            this.pegaChar();
+                            strTk = strTk + this.char;
                         }
                         //Criação do Token
                         let objToken = new Token(strTk, "Texto");
-                        tokenArr.push(objToken);
-                    } else if (char == ' ') {
+                        this.tokenArr.push(objToken);
+                    } else if (this.char == ' ') {
                         //tratamento espaço em branco
-                        let objToken = new Token(char, "Espaço");
-                        tokenArr.push(objToken);
+                        let objToken = new Token(this.char, "Espaço");
+                        this.tokenArr.push(objToken);
                     }
                     break;
             }
         }
 
-        return tokenArr;
+        return this.tokenArr;
 
     }
 
@@ -82,38 +82,38 @@ module.exports = class Scan {
     //Funções de controle
     iniciarChar() {
         this.char = this.MOCK_TEXT[this.pos];
-        charAnt = null;
-        charDps = MOCK_TEXT[pos + 1];
+        this.charAnt = null;
+        this.charDps = this.MOCK_TEXT[this.pos + 1];
     }
 
     pegaChar() {
-        if (pos < MOCK_TEXT.length - 2) {
-            pos++;
-            charAnt = char;
-            char = charDps;
-            charDps = MOCK_TEXT[pos + 1];
-        } else if (pos == MOCK_TEXT.length - 2) {
-            pos++;
-            charAnt = char;
-            char = MOCK_TEXT[pos];
-            charDps = null;
-            sair = true;
+        if (this.pos < this.MOCK_TEXT.length - 2) {
+            this.pos++;
+            this.charAnt = this.char;
+            this.char = this.charDps;
+            this.charDps = this.MOCK_TEXT[this.pos + 1];
+        } else if (this.pos == this.MOCK_TEXT.length - 2) {
+            this.pos++;
+            this.charAnt = this.char;
+            this.char = this.MOCK_TEXT[this.pos];
+            this.charDps = null;
+            this.sair = true;
         } else {
             //fim do array
         }
     }
 
     voltaChar() {
-        if (pos > 1) {
-            pos--;
-            charDps = char;
-            char = charAnt;
-            charAnt = MOCK_TEXT[pos - 1];
-        } else if (pos == 1) {
-            pos--;
-            charDps = char;
-            char = charAnt;
-            charAnt = null;
+        if (this.pos > 1) {
+            this.pos--;
+            this.charDps = this.char;
+            this.char = this.charAnt;
+            this.charAnt = this.MOCK_TEXT[this.pos - 1];
+        } else if (this.pos == 1) {
+            this.pos--;
+            this.charDps = this.char;
+            this.char = this.charAnt;
+            this.charAnt = null;
         } else {
             //início do array
         }
@@ -125,7 +125,7 @@ module.exports = class Scan {
     //Funções de suporte
 
     isLetter(char) {
-        return char.toLowerCase() != char.toUpperCase();
+        return this.char.toLowerCase() != this.char.toUpperCase();
     }
 }
 

@@ -7,3 +7,7 @@ let arrTk = [];
 //Chama o scanner e espera um array de token como retorno
 let scanner = new Scan(MOCK_TEXT);
 arrTk = scanner.escanear();
+
+if (0 == 0) {
+    console.log("Ok");
+}
