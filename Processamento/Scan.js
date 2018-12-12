@@ -120,8 +120,6 @@ module.exports = class Scan {
     }
 
 
-
-
     //Funções de suporte
 
     isLetter(char) {
