@@ -1,4 +1,5 @@
 const Token = require("../Objetos/Token");
+const Atributo = require("../Objetos/Atributo");
 
 module.exports = class Scan {
 
@@ -14,6 +15,7 @@ module.exports = class Scan {
 
         //variável de resultado
         this.tokenArr = [];
+        this.arrAtrb = [];
     }
 
     escanear() {
@@ -46,9 +48,22 @@ module.exports = class Scan {
                         let objToken = new Token(strTk, "FECHAMENTO");
                         this.tokenArr.push(objToken);
                     } else {
+                        //Validação para pegar atributos
+                        if(strTk.includes(" ")){
+                            var arrAtrb = strTk.split(" ");
+                            arrAtrb.forEach(atributo => {
+                                var chave = atributo.split("=")[0];
+                                var valor = atributo.split("=")[1];
+                                if(chave != undefined && valor != undefined){
+                                this.arrAtrb.push(new Atributo(chave, valor));
+                            }
+                            });
+                        }
+
                         //Criação do Token
-                        let objToken = new Token(strTk, "TAG");
+                        let objToken = new Token(strTk, "TAG", this.arrAtrb);
                         this.tokenArr.push(objToken);
+                        this.arrAtrb = [];
                     }
                     break;
 
